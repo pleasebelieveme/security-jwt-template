@@ -8,7 +8,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 
 import java.time.LocalDateTime;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -22,25 +21,25 @@ public class ErrorResponse {
 	private final LocalDateTime timestamp;
 	private final List<FieldError> errors;
 
-	public static ErrorResponse of(ErrorCode errorCode) {
-		return ErrorResponse.builder()
-			.status(errorCode.getStatus())
-			.code(errorCode.getCode())
-			.message(errorCode.getMessage())
-			.timestamp(LocalDateTime.now())
-			.errors(Collections.emptyList())
-			.build();
-	}
-
-	public static ErrorResponse of(ErrorCode errorCode, BindingResult bindingResult) {
-		return ErrorResponse.builder()
-			.status(errorCode.getStatus())
-			.code(errorCode.getCode())
-			.message(errorCode.getMessage())
-			.timestamp(LocalDateTime.now())
-			.errors(FieldError.of(bindingResult))
-			.build();
-	}
+//	public static ErrorResponse of(ErrorCode errorCode) {
+//		return ErrorResponse.builder()
+//			.status(errorCode.getStatus())
+//			.code(errorCode.getCode())
+//			.message(errorCode.getMessage())
+//			.timestamp(LocalDateTime.now())
+//			.errors(Collections.emptyList())
+//			.build();
+//	}
+//
+//	public static ErrorResponse of(ErrorCode errorCode, BindingResult bindingResult) {
+//		return ErrorResponse.builder()
+//			.status(errorCode.getStatus())
+//			.code(errorCode.getCode())
+//			.message(errorCode.getMessage())
+//			.timestamp(LocalDateTime.now())
+//			.errors(FieldError.of(bindingResult))
+//			.build();
+//	}
 
 	@Getter
 	@AllArgsConstructor
