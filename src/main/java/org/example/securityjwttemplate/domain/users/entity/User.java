@@ -1,7 +1,6 @@
 package org.example.securityjwttemplate.domain.users.entity;
 
 import org.example.securityjwttemplate.common.entity.BaseEntity;
-import org.springframework.boot.autoconfigure.domain.EntityScan;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -16,7 +15,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@EntityScan(basePackages = "org.example.hansabal.domain.users.entity")
 @Getter
 @Entity
 @Builder

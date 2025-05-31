@@ -1,6 +1,6 @@
 spring:
   application:
-    name: security-jwt-template
+    name: localhost
 
   datasource:
     url: ${MYSQL_URL}
@@ -10,18 +10,28 @@ spring:
   jpa:
     hibernate:
       ddl-auto: create
+
+    defer-datasource-initialization: true
+
     properties:
       hibernate:
         show_sql: true
         format_sql: true
         use_sql_comments: true
         dialect: org.hibernate.dialect.MySQLDialect
-        jdbc.batch_size: 100
-        order_inserts: true
-        order_updates: true
     open-in-view: false
+
+  sql:
+    init:
+      mode: always
+      data-locations: classpath:data.sql
 
 jwt:
   secret: ${SPRING_JWT_SECRET}
   access-token-expiration: 900000
   refresh-token-expiration: 21600000
+
+logging:
+  level:
+    org.hibernate.SQL: debug
+    org.hibernate.type.descriptor.sql: trace
