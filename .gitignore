@@ -1,0 +1,55 @@
+### Gradle ###
+.gradle/
+build/
+!gradle/wrapper/gradle-wrapper.jar
+
+### Java 클래스 빌드 디렉토리 예외 (src 내부는 제외) ###
+!**/src/main/**/build/
+!**/src/test/**/build/
+# infra 폴더 전체 무시
+infra/**
+
+# infra 폴더 안의 docker-compose.yaml 파일은 다시 포함
+!infra/docker-compose.yaml
+
+### 환경 변수 및 설정 파일 ###
+#.env
+#*.properties
+#application.yaml
+
+### Eclipse / Spring Tool Suite (STS) ###
+.apt_generated/
+.classpath
+.factorypath
+.project
+.settings/
+.springBeans
+.sts4-cache/
+bin/
+!**/src/main/**/bin/
+!**/src/test/**/bin/
+
+### IntelliJ IDEA ###
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+### NetBeans ###
+nbproject/private/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+### VS Code ###
+.vscode/
+
+### macOS ###
+.DS_Store
+
+### 불필요한 기본 문서 제거 ###
+HELP.md
