@@ -1,6 +1,5 @@
 package org.example.securityjwttemplate.domain.auth.controller;
 
-
 import org.example.securityjwttemplate.domain.auth.dto.request.LoginRequest;
 import org.example.securityjwttemplate.domain.auth.dto.response.TokenResponse;
 import org.example.securityjwttemplate.domain.auth.service.AuthService;
