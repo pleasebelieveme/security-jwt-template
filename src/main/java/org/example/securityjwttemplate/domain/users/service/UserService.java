@@ -2,8 +2,7 @@ package org.example.securityjwttemplate.domain.users.service;
 
 import org.example.securityjwttemplate.common.exception.BizException;
 import org.example.securityjwttemplate.common.security.jwt.UserAuth;
-import org.example.securityjwttemplate.domain.users.dto.request.UserCreateRequest;
-import org.example.securityjwttemplate.domain.users.dto.request.UserUpdateRequest;
+import org.example.securityjwttemplate.domain.users.dto.request.UserRequest;
 import org.example.securityjwttemplate.domain.users.dto.response.UserResponse;
 import org.example.securityjwttemplate.domain.users.entity.User;
 import org.example.securityjwttemplate.domain.users.entity.UserRole;
@@ -23,7 +22,7 @@ public class UserService {
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
 
-	public void createUser(@RequestBody UserCreateRequest request) {
+	public void createUser(@RequestBody UserRequest.create request) {
 
 		if (userRepository.existsByEmail(request.email())) {
 			throw new BizException(UserErrorCode.DUPLICATE_USER_ID);
@@ -48,7 +47,7 @@ public class UserService {
 	}
 
 	@Transactional
-	public void updateUser(UserUpdateRequest request, UserAuth userAuth) {
+	public void updateUser(UserRequest.update request, UserAuth userAuth) {
 		User findUser = userRepository.findByIdOrElseThrow(userAuth.getId());
 		checkPassword(request.oldPassword(), findUser.getPassword());
 
