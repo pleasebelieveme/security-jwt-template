@@ -1,7 +1,7 @@
 package org.example.securityjwttemplate.domain.auth.controller;
 
 
-import org.example.securityjwttemplate.domain.auth.dto.request.LoginRequestDto;
+import org.example.securityjwttemplate.domain.auth.dto.request.LoginRequest;
 import org.example.securityjwttemplate.domain.auth.dto.response.TokenResponse;
 import org.example.securityjwttemplate.domain.auth.service.AuthService;
 import org.springframework.http.HttpStatus;
@@ -23,7 +23,7 @@ public class AuthController {
 	private final AuthService authService;
 
 	@PostMapping("/login")
-	public ResponseEntity<TokenResponse> login(@Valid @RequestBody LoginRequestDto request) {
+	public ResponseEntity<TokenResponse> login(@Valid @RequestBody LoginRequest request) {
 		TokenResponse tokenResponse = authService.login(request);
 		return ResponseEntity.status(HttpStatus.OK).body(tokenResponse);
 	}
