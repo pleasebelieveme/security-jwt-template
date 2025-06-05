@@ -21,14 +21,14 @@ public class JwtUtil {
 	@Value("${jwt.secret}")
 	private String secretKey;
 
-	private static final long expiration = 1000L * 60 * 30;
+	private static final long EXPIRATION = 1000L * 60 * 30; // 30분
 
 	public String createToken(Long id, UserRole userRole){
 		return Jwts.builder()
 			.setSubject(String.valueOf(id))
 			.claim("userRole", userRole.name())
 			.setIssuedAt(new Date())
-			.setExpiration(new Date(System.currentTimeMillis()+expiration))
+			.setExpiration(new Date(System.currentTimeMillis()+EXPIRATION))
 			.signWith(Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8)))
 			.compact();
 	}
