@@ -1,7 +1,9 @@
 package org.example.securityjwttemplate.common.exception;
 
+import org.springframework.http.HttpStatus;
+
 public interface ErrorCode {
-	int getStatus();
+	HttpStatus getStatus();
 
 	String getCode();
 

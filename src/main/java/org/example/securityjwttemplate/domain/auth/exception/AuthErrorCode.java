@@ -9,21 +9,22 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum AuthErrorCode implements ErrorCode {
-	NOT_FOUND_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED,"액세스 토큰이 유효한 형태가 아닙니다."),
-	NOT_FOUND_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED,"리프레시 토큰이 유효한 형태가 아닙니다.");
+	NOT_FOUND_ACCESS_TOKEN(HttpStatus.UNAUTHORIZED, "A001", "액세스 토큰이 유효한 형태가 아닙니다."),
+	NOT_FOUND_REFRESH_TOKEN(HttpStatus.UNAUTHORIZED, "A002", "리프레시 토큰이 유효한 형태가 아닙니다.");
 
 
 	private final HttpStatus httpStatus;
+	private final String code;
 	private final String message;
 
 	@Override
-	public int getStatus() {
-		return httpStatus.value();
+	public HttpStatus getStatus() {
+		return httpStatus;
 	}
 
 	@Override
 	public String getCode() {
-		return this.name();
+		return code;
 	}
 
 	@Override

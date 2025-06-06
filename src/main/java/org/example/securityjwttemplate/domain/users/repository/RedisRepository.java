@@ -9,13 +9,11 @@ import lombok.RequiredArgsConstructor;
 @Repository
 @RequiredArgsConstructor
 public class RedisRepository {
-	//
+
 	// private final RedisTemplate<String,String> redisTemplate;
 	//
 	// public String generateBlacklistKey(String token){
-	// 	String blacklistKey = "blacklist:" + token;
-	//
-	// 	return blacklistKey;
+	// 	return "blacklist:" + token;
 	// }
 	//
 	// public boolean validateKey(String token){
