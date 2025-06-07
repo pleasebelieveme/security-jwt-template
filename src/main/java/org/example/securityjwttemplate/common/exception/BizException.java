@@ -1,5 +1,7 @@
 package org.example.securityjwttemplate.common.exception;
 
+import org.springframework.http.HttpStatus;
+
 import lombok.Getter;
 
 @Getter
@@ -16,7 +18,7 @@ public class BizException extends RuntimeException {
 		super(errorCode.getMessage());
 		this.errorCode = errorCode;
 	}
-	public int getStatus() {
+	public HttpStatus getStatus() {
 		return errorCode.getStatus();
 	}
 	public String getCode() {
