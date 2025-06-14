@@ -1,6 +1,10 @@
 package org.example.securityjwttemplate.common.config;
 
-import org.example.securityjwttemplate.common.security.jwt.JwtFilter;
+import lombok.RequiredArgsConstructor;
+import org.example.securityjwttemplate.common.jwt.JwtFilter;
+import org.example.securityjwttemplate.common.jwt.SecurityUrlMatcher;
+import org.example.securityjwttemplate.common.oauth2.CustomOAuth2UserService;
+import org.example.securityjwttemplate.common.oauth2.OAuth2LoginSuccessHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -14,13 +18,12 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @EnableWebSecurity
 @Configuration
+@RequiredArgsConstructor
 public class SecurityConfig {
 
 	private final JwtFilter jwtFilter;
-
-	public SecurityConfig(JwtFilter jwtFilter) {
-		this.jwtFilter = jwtFilter;
-	}
+	private final CustomOAuth2UserService customOAuth2UserService;
+	private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
@@ -38,8 +41,13 @@ public class SecurityConfig {
 				.requestMatchers(SecurityUrlMatcher.ADMIN_URLS).hasRole("ADMIN")
 				.anyRequest().authenticated()
 			)
+			.oauth2Login(oauth -> oauth
+				.userInfoEndpoint(user -> user.userService(customOAuth2UserService))
+				.successHandler(oAuth2LoginSuccessHandler)
+			)
 			.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();
 	}
+
 }

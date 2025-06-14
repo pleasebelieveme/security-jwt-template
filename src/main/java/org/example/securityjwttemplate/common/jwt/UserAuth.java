@@ -1,9 +1,8 @@
-package org.example.securityjwttemplate.common.security.jwt;
-
-import org.example.securityjwttemplate.domain.users.entity.UserRole;
+package org.example.securityjwttemplate.common.jwt;
 
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import org.example.securityjwttemplate.domain.users.entity.UserRole;
 
 @Getter
 @RequiredArgsConstructor

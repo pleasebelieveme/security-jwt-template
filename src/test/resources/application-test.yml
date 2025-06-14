@@ -1,0 +1,13 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQLDialect
+        show_sql: false
+        format_sql: false
+    open-in-view: false
+
+jwt:
+  secret: TlSTtzcspRw0Ec1sUrK9WwJ7a5XHVWzisIs2/5rg+bU=
