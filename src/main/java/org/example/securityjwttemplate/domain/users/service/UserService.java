@@ -1,11 +1,11 @@
 package org.example.securityjwttemplate.domain.users.service;
 
 import org.example.securityjwttemplate.common.exception.BizException;
-import org.example.securityjwttemplate.common.security.jwt.UserAuth;
-import org.example.securityjwttemplate.domain.users.dto.request.UserRequest;
+import org.example.securityjwttemplate.common.jwt.UserAuth;
+import org.example.securityjwttemplate.domain.users.dto.request.UserCreateRequest;
+import org.example.securityjwttemplate.domain.users.dto.request.UserUpdateRequest;
 import org.example.securityjwttemplate.domain.users.dto.response.UserResponse;
 import org.example.securityjwttemplate.domain.users.entity.User;
-import org.example.securityjwttemplate.domain.users.entity.UserRole;
 import org.example.securityjwttemplate.domain.users.exception.UserErrorCode;
 import org.example.securityjwttemplate.domain.users.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,21 +22,21 @@ public class UserService {
 	private final UserRepository userRepository;
 	private final PasswordEncoder passwordEncoder;
 
-	public void createUser(@RequestBody UserRequest.create request) {
+	public void createUser(@RequestBody UserCreateRequest request) {
 
 		if (userRepository.existsByEmail(request.email())) {
-			throw new BizException(UserErrorCode.DUPLICATE_USER_ID);
+			throw new BizException(UserErrorCode.DUPLICATE_USER_EMAIL);
 		}
 
 		String encodedPassword = passwordEncoder.encode(request.password());
 
 		User user = User.builder()
-			.email(request.email())
-			.password(encodedPassword)
-			.name(request.name())
-			.nickname(request.nickname())
-			.userRole(request.userRole() != null ? request.userRole() : UserRole.USER)
-			.build();
+				.email(request.email())
+				.password(encodedPassword)
+				.name(request.name())
+				.nickname(request.nickname())
+				.userRole(request.userRole())
+				.build();
 
 		userRepository.save(user);
 	}
@@ -47,7 +47,7 @@ public class UserService {
 	}
 
 	@Transactional
-	public void updateUser(UserRequest.update request, UserAuth userAuth) {
+	public void updateUser(UserUpdateRequest request, UserAuth userAuth) {
 		User findUser = userRepository.findByIdOrElseThrow(userAuth.getId());
 		checkPassword(request.oldPassword(), findUser.getPassword());
 
@@ -61,7 +61,11 @@ public class UserService {
 			throw new BizException(UserErrorCode.PASSWORD_NOT_CHANGED);
 		}
 
-		String encodedPassword = passwordEncoder.encode(request.newPassword());
+		String encodedPassword = null;
+		if (request.newPassword() != null) {
+			encodedPassword = passwordEncoder.encode(request.newPassword());
+		}
+
 		findUser.updateUser(request.nickname(), encodedPassword);
 	}
 
@@ -78,3 +82,4 @@ public class UserService {
 		// 추후 유저관련 내용 삭제 로직 추가
 	}
 }
+

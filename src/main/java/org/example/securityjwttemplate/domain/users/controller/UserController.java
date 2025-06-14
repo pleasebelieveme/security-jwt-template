@@ -1,7 +1,8 @@
 package org.example.securityjwttemplate.domain.users.controller;
 
-import org.example.securityjwttemplate.common.security.jwt.UserAuth;
-import org.example.securityjwttemplate.domain.users.dto.request.UserRequest;
+import org.example.securityjwttemplate.common.jwt.UserAuth;
+import org.example.securityjwttemplate.domain.users.dto.request.UserCreateRequest;
+import org.example.securityjwttemplate.domain.users.dto.request.UserUpdateRequest;
 import org.example.securityjwttemplate.domain.users.dto.response.UserResponse;
 import org.example.securityjwttemplate.domain.users.service.UserService;
 import org.springframework.http.HttpStatus;
@@ -20,13 +21,13 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/v1/users")
+@RequestMapping("/api/users")
 public class UserController {
 
 	private final UserService userService;
 
 	@PostMapping
-	public ResponseEntity<Void> createUser(@Valid @RequestBody UserRequest.create request) {
+	public ResponseEntity<Void> createUser(@Valid @RequestBody UserCreateRequest request) {
 		userService.createUser(request);
 		return ResponseEntity.status(HttpStatus.CREATED).build();
 	}
@@ -37,7 +38,7 @@ public class UserController {
 	}
 
 	@PatchMapping
-	public ResponseEntity<Void> updateUser(@Valid @RequestBody UserRequest.update request, UserAuth userAuth) {
+	public ResponseEntity<Void> updateUser(@Valid @RequestBody UserUpdateRequest request, UserAuth userAuth) {
 		userService.updateUser(request, userAuth);
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
@@ -48,3 +49,4 @@ public class UserController {
 		return ResponseEntity.status(HttpStatus.OK).build();
 	}
 }
+
