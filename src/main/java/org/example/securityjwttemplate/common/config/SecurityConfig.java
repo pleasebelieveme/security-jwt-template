@@ -1,6 +1,8 @@
 package org.example.securityjwttemplate.common.config;
 
 import lombok.RequiredArgsConstructor;
+import org.example.securityjwttemplate.common.jwt.JwtAccessDeniedHandler;
+import org.example.securityjwttemplate.common.jwt.JwtAuthenticationEntryPoint;
 import org.example.securityjwttemplate.common.jwt.JwtFilter;
 import org.example.securityjwttemplate.common.jwt.SecurityUrlMatcher;
 import org.example.securityjwttemplate.common.oauth2.CustomOAuth2UserService;
@@ -24,7 +26,8 @@ public class SecurityConfig {
 	private final JwtFilter jwtFilter;
 	private final CustomOAuth2UserService customOAuth2UserService;
 	private final OAuth2LoginSuccessHandler oAuth2LoginSuccessHandler;
-
+	private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+	private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
 	@Bean
 	public PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
@@ -33,19 +36,23 @@ public class SecurityConfig {
 	@Bean
 	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
 		http
-			.csrf(AbstractHttpConfigurer::disable)
-			.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-			.authorizeHttpRequests(auth -> auth
-				.requestMatchers(SecurityUrlMatcher.PUBLIC_URLS).permitAll()
-				.requestMatchers(SecurityUrlMatcher.REFRESH_URL).authenticated()
-				.requestMatchers(SecurityUrlMatcher.ADMIN_URLS).hasRole("ADMIN")
-				.anyRequest().authenticated()
-			)
-			.oauth2Login(oauth -> oauth
-				.userInfoEndpoint(user -> user.userService(customOAuth2UserService))
-				.successHandler(oAuth2LoginSuccessHandler)
-			)
-			.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+				.csrf(AbstractHttpConfigurer::disable)
+				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+				.authorizeHttpRequests(auth -> auth
+						.requestMatchers(SecurityUrlMatcher.PUBLIC_URLS).permitAll()
+						.requestMatchers(SecurityUrlMatcher.REFRESH_URL).authenticated()
+						.requestMatchers(SecurityUrlMatcher.ADMIN_URLS).hasRole("ADMIN")
+						.anyRequest().authenticated()
+				)
+				.oauth2Login(oauth -> oauth
+						.userInfoEndpoint(user -> user.userService(customOAuth2UserService))
+						.successHandler(oAuth2LoginSuccessHandler)
+				)
+				.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+				.exceptionHandling(exception -> exception
+						.authenticationEntryPoint(jwtAuthenticationEntryPoint)  // 인증 실패 (401)
+						.accessDeniedHandler(jwtAccessDeniedHandler)            // 인가 실패 (403)
+				);
 
 		return http.build();
 	}
