@@ -30,8 +30,7 @@ public class UserController {
 	@PostMapping
 	public ResponseEntity<ApiResponse<Void>> createUser(@Valid @RequestBody UserCreateRequest request) {
 		userService.createUser(request);
-		return ResponseEntity.status(HttpStatus.CREATED)
-				.body(ApiResponse.success("회원가입이 완료되었습니다."));
+		return ResponseEntity.status(HttpStatus.CREATED).body(ApiResponse.success("회원가입이 완료되었습니다."));
 	}
 
 	@GetMapping("/me")

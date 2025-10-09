@@ -24,9 +24,7 @@ public class UserService {
 
 	public void createUser(@RequestBody UserCreateRequest request) {
 
-		if (userRepository.existsByEmail(request.email())) {
-			throw new BizException(UserErrorCode.DUPLICATE_USER_EMAIL);
-		}
+		userRepository.validateDuplicateEmail(request.email());
 
 		String encodedPassword = passwordEncoder.encode(request.password());
 
@@ -69,7 +67,7 @@ public class UserService {
 		findUser.updateUser(request.nickname(), encodedPassword);
 	}
 
-	private void checkPassword(String rawPassword, String hashedPassword) {
+	public void checkPassword(String rawPassword, String hashedPassword) {
 		if (!passwordEncoder.matches(rawPassword, hashedPassword)) {
 			throw new BizException(UserErrorCode.INVALID_PASSWORD);
 		}
