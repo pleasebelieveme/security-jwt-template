@@ -12,10 +12,14 @@ import org.springframework.stereotype.Repository;
 public interface UserRepository extends JpaRepository<User, Long> {
 
 
-	Optional<User> findByEmail(String email);
-
 	boolean existsByEmail(String email);
+	default void validateDuplicateEmail(String email) {
+		if (existsByEmail(email)) {
+			throw new BizException(UserErrorCode.DUPLICATE_USER_EMAIL);
+		}
+	}
 
+	Optional<User> findByEmail(String email);
 	default User findByEmailOrElseThrow(String email) {
 		return findByEmail(email).orElseThrow(() -> new BizException(UserErrorCode.NOT_FOUND_USER));
 	}
