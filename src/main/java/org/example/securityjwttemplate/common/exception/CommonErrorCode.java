@@ -14,7 +14,9 @@ public enum CommonErrorCode implements ErrorCode {
     METHOD_NOT_ALLOWED(HttpStatus.METHOD_NOT_ALLOWED, "C004", "허용되지 않은 HTTP 메서드입니다."),
     UNSUPPORTED_MEDIA_TYPE(HttpStatus.UNSUPPORTED_MEDIA_TYPE, "C005", "지원하지 않는 미디어 타입입니다."),
     UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "C006", "인증이 필요합니다."),
-    ACCESS_DENIED(HttpStatus.FORBIDDEN, "C007", "접근 권한이 없습니다.");
+    ACCESS_DENIED(HttpStatus.FORBIDDEN, "C007", "접근 권한이 없습니다."),
+	DATA_ALREADY_DELETED(HttpStatus.CONFLICT, "C008", "이미 삭제된 유저입니다."),
+	DATA_NOT_DELETED(HttpStatus.BAD_REQUEST, "C009", "삭제되지 않은 유저입니다.");
 
 	private final HttpStatus status;
 	private final String code;
