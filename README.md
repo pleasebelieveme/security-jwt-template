@@ -1,119 +1,95 @@
-### ✅ Spring Boot JWT 인증 템플릿 (Java 17 기준)
+# 🚀 Spring Security + JWT Authentication Template
+
+> 간결하고 확장 가능한 **Spring Boot 3.x 기반 인증/인가 템플릿**  
+> `Package by Feature` 구조로 구성되어 있으며, **JwtFilter 기반 인증 흐름**을 제공합니다.
 
 ---
 
-## 📦 Java & Spring 환경
-- **Java 버전:** 17
-- **Spring Boot:** 3.2.x
-- **Gradle:** 8.2+
-- **의존성:** Spring Security, JWT
+## 🧰 Tech Stack
+
+| Category | Stack                         |
+|-----------|-------------------------------|
+| Language | Java 17                       |
+| Framework | Spring Boot 3.2.x             |
+| Build Tool | Gradle 8.2+                   |
+| Security | Spring Security, JWT          |
+| Database | MySQL(정보저장), Redis (블랙리스트 관리) |
+| Validation | Jakarta Validation            |
+| Etc | Lombok, Jackson               |
 
 ---
 
-## 🗂️ 패키지 구조 예시
+## 🏗️ Architecture
 
+### 📦 Package by Feature 구조
 ```
-org.example.hansabal
+org.example.securityjwttemplate
 ├── common
-│   └── jwt
-│       ├── JwtUtil.java
-│       ├── JwtFilter.java
-│       └── UserAuth.java
+│ ├── jwt # JWT 유틸, 필터, 인증 정보
+│ ├── exception # 공통 에러 포멧(BizException
+│ └── response # 공통 응답 포맷(ApiResponse)
 ├── config
-│   └── SecurityConfig.java
-├── domain
-│   └── users
-│       ├── entity
-│       │   └── UserRole.java
-│       ├── repository
-│       │   └── RedisRepository.java
-├── global
-│   └── annotation
-│       └── LoginUser.java (custom @AuthenticationPrincipal)
+│ └── SecurityConfig.java
+└── domain
+  ├── auth # 로그인, 로그아웃, 토큰 재발급
+  └── users # 사용자 CRUD, 프로필 조회/수정
+
 ```
+
+## 📡 API 명세
+
+### 🧾 AuthController (`/api/v3/auth`)
+
+| Method | Endpoint | Description | Request | Response |
+|--------|-----------|--------------|----------|-----------|
+| `POST` | `/login` | 로그인 | `LoginRequest` | `TokenResponse` |
+| `POST` | `/logout` | 로그아웃 | Header(Token) | - |
+| `POST` | `/reissue` | 토큰 재발급 | Header(Refresh Token) | `TokenResponse` |
+
+### 👤 UserController (`/api/v3/users`)
+
+| Method | Endpoint | Description | Request | Response |
+|--------|-----------|--------------|----------|-----------|
+| `POST` | `/` | 회원가입 | `UserCreateRequest` | - |
+| `GET` | `/me` | 내 정보 조회 | JWT 인증 필요 | `UserResponse` |
+| `PATCH` | `/` | 회원 정보 수정 | `UserUpdateRequest` | - |
+| `DELETE` | `/` | 회원 탈퇴 | JWT 인증 필요 | - |
 
 ---
 
-## 🔐 JwtFilter.java
-```java
-public class JwtFilter extends OncePerRequestFilter {
-    @Override
-    protected void doFilterInternal(...) {
-        String token = jwtUtil.extractToken(request);
-        if (redisRepository.validateKey(token)) {
-            response.sendError(...);
-            return;
-        }
-        if (jwtUtil.validateToken(token)) {
-            UserAuth userAuth = jwtUtil.extractUserAuth(token);
-            List<SimpleGrantedAuthority> authorities = List.of(
-                new SimpleGrantedAuthority("ROLE_" + userAuth.getUserRole().name())
-            );
-            UsernamePasswordAuthenticationToken authToken =
-                new UsernamePasswordAuthenticationToken(userAuth, null, authorities);
-            SecurityContextHolder.getContext().setAuthentication(authToken);
-        }
-        filterChain.doFilter(request, response);
+## 🧠 ERD (간략 예시)
+
+---
+
+## 📘 인증 요청 & 응답 예시
+### 🔸 로그인 요청
+```json
+// POST /api/v3/auth/login
+// Content-Type: application/json
+
+{
+    "email": "test@example.com",
+    "password": "1234"
+}
+```
+
+### 🔹 로그인 성공 응답
+```json
+{
+    "status": "SUCCESS",
+    "code": "S200",
+    "message": "로그인 성공",
+    "data": {
+        "accessToken": "eyJhbGciOiJIUzI1NiIs...",
+        "refreshToken": "eyJhbGciOiJIUzI1NiIs..."
     }
 }
 ```
-
----
-
-## 🔧 JwtUtil.java
-```java
-public class JwtUtil {
-    public String createToken(Long id, UserRole userRole) {...}
-    public UserAuth extractUserAuth(String token) {...}
-    public boolean validateToken(String token) {...}
-    public String extractToken(HttpServletRequest request) {...}
-    public long getExpiration(String token) {...}
-}
-```
-
----
-
-## 👤 UserAuth.java
-```java
-@Getter
-@RequiredArgsConstructor
-public class UserAuth {
-    private final Long id;
-    private final UserRole userRole;
-}
-```
-
----
-
-## 🛡️ SecurityConfig.java
-```java
-@EnableWebSecurity
-@EnableMethodSecurity
-public class SecurityConfig {
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-        ...
-        return http.build();
-    }
-}
-```
-
----
-
-## 📘 README 템플릿 일부
-```md
-### 🔐 인증 흐름
-1. 클라이언트 로그인 요청 (ID/PW)
-2. 서버에서 JWT 생성 → 응답 헤더에 반환
-3. 클라이언트가 이후 모든 요청에 JWT 포함
-4. JwtFilter에서 토큰 추출 + 검증 + 시큐리티 컨텍스트 저장
-```
-
-### 🧑‍💻 주입 예시
+## 🧑‍💻 인증된 사용자 정보 주입 예시
 ```java
 @GetMapping("/me")
-public String getMyInfo(@LoginUser UserAuth userAuth) {
-    return "Hello, user " + userAuth.getId() + " with role: " + userAuth.getUserRole();
+public ResponseEntity<ApiResponse<UserResponse>> findById(@AuthenticationPrincipal UserAuth userAuth) {
+    UserResponse response = userService.findById(userAuth);
+    return ResponseEntity.ok(ApiResponse.success("회원 조회 성공", response));
 }
 ```
