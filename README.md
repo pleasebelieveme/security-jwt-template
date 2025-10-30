@@ -5,6 +5,23 @@
 
 ---
 
+## 📑 목차
+
+- [🧰 Tech Stack](#🧰-tech-stack)
+- [🏗️ Architecture](#🏗️-architecture)
+  - [📦 Package by Feature 구조](#📦-package-by-feature-구조)
+  - [🧩 System Architecture (Mermaid Diagram)](#🧩-system-architecture-mermaid-diagram)
+- [📡 API 명세](#📡-api-명세)
+  - [🧾 AuthController (`/api/v3/auth`)](#🧾-authcontroller-api-v3auth)
+  - [👤 UserController (`/api/v3/users`)](#👤-usercontroller-api-v3users)
+- [🧠 ERD](#🧠-erd)
+- [🪃 요청 시퀀스다이어그램](#🪃-요청-시퀀스다이어그램)
+- [📘 인증 요청 & 응답 예시](#📘-인증-요청--응답-예시)
+- [🧑‍💻 인증된 사용자 정보 주입 예시](#🧑‍💻-인증된-사용자-정보-주입-예시)
+
+---
+
+
 ## 🧰 Tech Stack
 
 | Category | Stack                         |
