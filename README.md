@@ -26,7 +26,7 @@
 org.example.securityjwttemplate
 ├── common
 │ ├── jwt # JWT 유틸, 필터, 인증 정보
-│ ├── exception # 공통 에러 포멧(BizException
+│ ├── exception # 공통 에러 포멧(BizException)
 │ └── response # 공통 응답 포맷(ApiResponse)
 ├── config
 │ └── SecurityConfig.java
