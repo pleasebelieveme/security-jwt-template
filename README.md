@@ -36,6 +36,16 @@ org.example.securityjwttemplate
 
 ```
 
+### 🧩 System Architecture (Mermaid Diagram)
+
+```mermaid
+flowchart LR
+    A["👤 User"] <--> B[🌐 Spring Boot Application]
+    B <--> C["🗄️ Database (User Data)"]
+    B <--> D["🧠 Redis (Token Storage / Blacklist)"]
+```
+
+
 ## 📡 API 명세
 
 ### 🧾 AuthController (`/api/v3/auth`)
@@ -57,7 +67,16 @@ org.example.securityjwttemplate
 
 ---
 
-## 🧠 ERD (간략 예시)
+## 🧠 ERD
+
+<img width="383" height="455" alt="스크린샷 2025-10-30 오전 10 00 34" src="https://github.com/user-attachments/assets/000f9323-1367-4c63-9bac-ba88ba01ced3" />
+
+---
+
+## 🪃 요청 시퀀스다이어그램
+
+<img width="609" height="481" alt="스크린샷 2025-10-30 오전 10 35 43" src="https://github.com/user-attachments/assets/1611bb1b-e921-41f0-8786-fce86c067218" />
+
 
 ---
 
