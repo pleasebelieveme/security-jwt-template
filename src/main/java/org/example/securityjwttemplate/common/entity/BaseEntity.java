@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 
 import org.example.securityjwttemplate.common.exception.BizException;
 import org.example.securityjwttemplate.common.exception.CommonErrorCode;
+import org.hibernate.annotations.Where;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -17,6 +18,7 @@ import lombok.Getter;
 
 @Getter
 @MappedSuperclass
+@Where(clause = "deleted_at IS NULL")
 @EntityListeners(AuditingEntityListener.class)
 public abstract class BaseEntity {
 	@CreatedDate
