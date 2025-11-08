@@ -76,7 +76,7 @@ public class UserService {
 	@Transactional
 	public void deleteUser(UserAuth userAuth) {
 		User user = userRepository.findByIdOrElseThrow(userAuth.getId());
-		user.softDelete();
+		user.softDelete(user.getId());
 		// 추후 유저관련 내용 삭제 로직 추가
 	}
 }
