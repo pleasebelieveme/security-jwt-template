@@ -6,6 +6,11 @@ public class SecurityUrlMatcher {
 	public static final String[] PUBLIC_URLS = {
 		"/api/users",
 		"/api/auth/login",
+		"/swagger-ui/**",
+		"/swagger",
+		"/v3/api-docs/**",
+		"/v3/api-docs.yaml",
+		"/actuator/**"
 	};
 
 	public static final String[] ADMIN_URLS = {
