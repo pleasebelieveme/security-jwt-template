@@ -1,29 +1,24 @@
 package org.example.securityjwttemplate.common.exception;
 
+import org.example.securityjwttemplate.common.code.ResponseCode;
+
 import lombok.Getter;
-import org.springframework.http.HttpStatus;
 
 @Getter
 public class BizException extends RuntimeException {
 
-	private final ErrorCode errorCode;
+	private final ResponseCode responseCode;
 
-	public BizException(String message, ErrorCode errorCode) {
+	public BizException(String message, ResponseCode responseCode) {
 		super(message);
-		this.errorCode = errorCode;
+		this.responseCode = responseCode;
 	}
 
-	public BizException(ErrorCode errorCode) {
-		super(errorCode.getMessage());
-		this.errorCode = errorCode;
+	public BizException(ResponseCode responseCode) {
+		super(responseCode.getMessage());
+		this.responseCode = responseCode;
 	}
-	public HttpStatus getStatus() {
-		return errorCode.getStatus();
-	}
-	public String getCode() {
-		return errorCode.getCode();
-	}
-	public String getErrorMessage() {
-		return errorCode.getMessage();
-	}
+
+	/* 3. getStatus(), getCode(), getErrorMessage() 메서드는 제거됨 */
+	// GlobalExceptionHandler에서 exception.getResponseCode().getStatus() 등으로 접근 가능합니다.
 }

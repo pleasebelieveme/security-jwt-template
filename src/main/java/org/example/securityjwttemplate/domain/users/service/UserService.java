@@ -6,6 +6,7 @@ import org.example.securityjwttemplate.domain.users.dto.request.UserCreateReques
 import org.example.securityjwttemplate.domain.users.dto.request.UserUpdateRequest;
 import org.example.securityjwttemplate.domain.users.dto.response.UserResponse;
 import org.example.securityjwttemplate.domain.users.entity.User;
+import org.example.securityjwttemplate.domain.users.entity.UserRole;
 import org.example.securityjwttemplate.domain.users.exception.UserErrorCode;
 import org.example.securityjwttemplate.domain.users.repository.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -33,7 +34,7 @@ public class UserService {
 				.password(encodedPassword)
 				.name(request.name())
 				.nickname(request.nickname())
-				.userRole(request.userRole())
+				.userRole(request.userRole() != null ? request.userRole() : UserRole.USER)
 				.build();
 
 		userRepository.save(user);

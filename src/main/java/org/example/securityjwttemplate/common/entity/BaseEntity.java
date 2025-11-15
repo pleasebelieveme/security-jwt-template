@@ -3,7 +3,7 @@ package org.example.securityjwttemplate.common.entity;
 import java.time.LocalDateTime;
 
 import org.example.securityjwttemplate.common.exception.BizException;
-import org.example.securityjwttemplate.common.exception.CommonErrorCode;
+import org.example.securityjwttemplate.common.code.CommonErrorCode;
 import org.hibernate.annotations.Where;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -38,7 +38,7 @@ public abstract class BaseEntity {
 
 	private Long deletedBy;
 
-	public void softDelete(Long userId) {
+	public void markDelete(Long userId) {
 		if (isDeleted()) {
 			throw new BizException(CommonErrorCode.DATA_ALREADY_DELETED);
 		}

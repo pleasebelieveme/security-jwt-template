@@ -1,6 +1,6 @@
 spring:
   application:
-    name: Hansabal
+    name: security-jwt-template
 
   datasource:
     url: ${MYSQL_URL}
