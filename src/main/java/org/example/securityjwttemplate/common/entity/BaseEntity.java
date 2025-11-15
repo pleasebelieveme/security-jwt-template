@@ -38,7 +38,7 @@ public abstract class BaseEntity {
 
 	private Long deletedBy;
 
-	public void markDelete(Long userId) {
+	public void markDeleted(Long userId) {
 		if (isDeleted()) {
 			throw new BizException(CommonErrorCode.DATA_ALREADY_DELETED);
 		}
